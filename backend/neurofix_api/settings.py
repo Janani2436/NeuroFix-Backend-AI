@@ -31,6 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
+    'learning_plans',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -74,8 +80,12 @@ WSGI_APPLICATION = 'neurofix_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neurofix_db',
+        'USER': 'postgres',
+        'PASSWORD': 'Plusestenvous@06', 
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -120,3 +130,27 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# --- Custom Project Settings ---
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication', 
+    )
+}
+
+# Custom User Model
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# Login/Logout Redirects
+LOGIN_REDIRECT_URL = '/api/users/'
+LOGOUT_REDIRECT_URL = '/api-auth/login/'
+
+# CORS Settings
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000', # Example for React
+    'http://localhost:8080', # Example for Vue
+]
