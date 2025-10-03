@@ -7,3 +7,5 @@ __pycache__/
 
 # Database file (if you ever use sqlite again)
 db.sqlite3
+
+.env
